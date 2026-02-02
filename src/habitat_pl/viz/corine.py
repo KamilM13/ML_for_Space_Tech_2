@@ -1,14 +1,53 @@
-# CLC2018 color palette and class codes from dataset documentation:
-clc_palette = [
-  '9e9e9e','dcdcdc','cc99ff','cc66ff','9900ff','ffcc99','ff6600','ff0000','cc3300','ffff00',
-  'ccff33','99ff33','66ff00','33cc00','009900','006600','99cc00','cccc00','669900','99ffcc',
-  '66cc99','339966','006633','99ffff','66ffff','33cccc','009999','003366','99ccff','6699ff',
-  '3366ff','0033cc','000099','9999ff','6666cc','333399','ff99cc','ff66cc','ff3399','cc0066',
-  '990033','ffcccc','ff99cc','ff66cc'
+# CLC2018 color palette and class codes
+CLC = [
+    (111, "#e6004d", "Continuous urban fabric"),
+    (112, "#ff0000", "Discontinuous urban fabric"),
+    (121, "#cc4df2", "Industrial or commercial units"),
+    (122, "#cc0000", "Road and rail networks and associated land"),
+    (123, "#e6cccc", "Port areas"),
+    (124, "#e6cce6", "Airports"),
+    (131, "#a600cc", "Mineral extraction sites"),
+    (132, "#a64d00", "Dump sites"),
+    (133, "#ff4dff", "Construction sites"),
+    (141, "#ffa6ff", "Green urban areas"),
+    (142, "#ffe6ff", "Sport and leisure facilities"),
+    (211, "#ffffa8", "Non-irrigated arable land"),
+    (212, "#ffff00", "Permanently irrigated land"),
+    (213, "#e6e600", "Rice fields"),
+    (221, "#e68000", "Vineyards"),
+    (222, "#f2a64d", "Fruit trees and berry plantations"),
+    (223, "#e6a600", "Olive groves"),
+    (231, "#e6e64d", "Pastures"),
+    (241, "#ffe6a6", "Annual crops associated with permanent crops"),
+    (242, "#ffe64d", "Complex cultivation patterns"),
+    (243, "#e6cc4d", "Land principally occupied by agriculture with significant areas of natural vegetation"),
+    (244, "#f2cca6", "Agro-forestry areas"),
+    (311, "#80ff00", "Broad-leaved forest"),
+    (312, "#00a600", "Coniferous forest"),
+    (313, "#4dff00", "Mixed forest"),
+    (321, "#ccf24d", "Natural grasslands"),
+    (322, "#a6ff80", "Moors and heathland"),
+    (323, "#a6e64d", "Sclerophyllous vegetation"),
+    (324, "#a6f200", "Transitional woodland-shrub"),
+    (331, "#e6e6e6", "Beaches - dunes - sands"),
+    (332, "#cccccc", "Bare rocks"),
+    (333, "#ccffcc", "Sparsely vegetated areas"),
+    (334, "#000000", "Burnt areas"),
+    (335, "#a6e6cc", "Glaciers and perpetual snow"),
+    (411, "#a6a6ff", "Inland marshes"),
+    (412, "#4d4dff", "Peat bogs"),
+    (421, "#ccccff", "Salt marshes"),
+    (422, "#e6e6ff", "Salines"),
+    (423, "#a6a6e6", "Intertidal flats"),
+    (511, "#00ccf2", "Water courses"),
+    (512, "#80f2e6", "Water bodies"),
+    (521, "#00ffa6", "Coastal lagoons"),
+    (522, "#a6ffe6", "Estuaries"),
+    (523, "#e6f2ff", "Sea and ocean"),
 ]
 
-# Class values 1–44 (sequential order per docs)
-clc_vis = {'min': 1, 'max': 44, 'palette': clc_palette}
+CLC_COLOR = {code: col for code, col, _ in CLC}
+CLC_NAME = {code: name for code, _, name in CLC}
 
 import ipywidgets as widgets
 layout = widgets.Layout(
@@ -19,54 +58,13 @@ layout = widgets.Layout(
     padding='5px'
 )
 
-legend_dict = {
-    "111 Continuous urban fabric": "9e9e9e",
-    "112 Discontinuous urban fabric": "dcdcdc",
-    "121 Industrial or commercial units": "cc99ff",
-    "122 Road and rail networks and associated land": "cc66ff",
-    "123 Port areas": "9900ff",
-    "124 Airports": "ffcc99",
-    "131 Mineral extraction sites": "ff6600",
-    "132 Dump sites": "ff0000",
-    "133 Construction sites": "cc3300",
-    "141 Green urban areas": "ffff00",
-    "142 Sport and leisure facilities": "ccff33",
-    "211 Non-irrigated arable land": "99ff33",
-    "212 Permanently irrigated land": "66ff00",
-    "213 Rice fields": "33cc00",
-    "221 Vineyards": "009900",
-    "222 Fruit trees and berry plantations": "006600",
-    "223 Olive groves": "99cc00",
-    "231 Pastures": "cccc00",
-    "241 Annual crops associated with permanent crops": "669900",
-    "242 Complex cultivation patterns": "99ffcc",
-    "243 Land principally occupied by agriculture, with significant areas of natural vegetation": "66cc99",
-    "244 Agro-forestry areas": "339966",
-    "311 Broad-leaved forest": "006633",
-    "312 Coniferous forest": "99ffff",
-    "313 Mixed forest": "66ffff",
-    "321 Natural grasslands": "33cccc",
-    "322 Moors and heathland": "009999",
-    "323 Sclerophyllous vegetation": "003366",
-    "324 Transitional woodland-shrub": "99ccff",
-    "331 Beaches, dunes, sands": "6699ff",
-    "332 Bare rocks": "3366ff",
-    "333 Sparsely vegetated areas": "0033cc",
-    "334 Burnt areas": "000099",
-    "335 Glaciers and perpetual snow": "9999ff",
-    "411 Inland marshes": "6666cc",
-    "412 Peat bogs": "333399",
-    "421 Salt marshes": "ff99cc",
-    "422 Salines": "ff66cc",
-    "423 Intertidal flats": "ff3399",
-    "511 Water courses": "cc0066",
-    "512 Water bodies": "990033",
-    "521 Coastal lagoons": "ffcccc",
-    "522 Estuaries": "ff99cc",
-    "523 Sea and ocean": "ff66cc"
-}
+# Legacy mappings for backward compatibility
+codes = [code for code, _, _ in CLC]
 
-codes = [int(k[:3]) for k in legend_dict.keys()]
+clc_palette = [col.lstrip('#') for code, col, _ in CLC]
+clc_vis = {'min': 1, 'max': len(codes), 'palette': clc_palette}
 
-vis = {'min': 1, 'max': len(codes), 'palette': list(legend_dict.values())}
+legend_dict = {f"{code} {name}": col.lstrip('#') for code, col, name in CLC}
+
+vis = {'min': 1, 'max': len(codes), 'palette': [col.lstrip('#') for col in CLC_COLOR.values()]}
 
